@@ -22,33 +22,102 @@
 
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textview_first2"
-            android:layout_width="wrap_content"
+            android:id="@+id/textview_date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="336dp"
+            android:layout_marginTop="80dp"
+
             android:text="@string/hello_first_fragment"
-            android:textSize="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/textview_first"
+            android:id="@+id/textview_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/hello_first_fragment"
+
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textview_content1_2"
+          android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textSize="40sp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textview_content3"
+           android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textSize="40sp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/editPrice"
+            android:textColor="#777"
+            android:textColorHint="#777"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:visibility="invisible"
+            android:layout_margin="20dp"
+             android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="#eee"
+            android:textSize="17sp" />
+        <EditText
+            android:id="@+id/editDescription"
+            android:textColor="#777"
+            android:textColorHint="#777"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:visibility="invisible"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="#eee"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="272dp"
-            android:text="@string/hello_first_fragment"
-            android:textSize="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="Сохранить"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="239dp"
+            tools:layout_editor_absoluteY="562dp"
+            tools:ignore="MissingConstraints" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btnHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="История"
+            android:layout_marginTop="30dp"
+            android:visibility="invisible"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="560dp"
+            tools:ignore="MissingConstraints" />
+
+
+    </LinearLayout>
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 package com.example.account.activities;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -19,11 +20,16 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +45,10 @@ import com.example.account.R;
 import com.example.account.api.RetrofitClient;
 import com.example.account.models.ImportResponse;
 import com.example.account.models.LoginResponse;
+import com.example.account.models.MjResponse;
 import com.example.account.models.NfcActive;
+import com.example.account.models.PostContentData;
+import com.example.account.models.RdPxResponse;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,7 +66,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "TAG" ;
     private TextView mTextView;
     private TextView timeTextView;
@@ -67,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
     private Timer mTimer;
     private MyTimerTask mMyTimerTask;
     private String userId;
+    private Button btnSave;
+    private Button btnHistory;
+    private EditText editTextPrice;
+    private EditText editTextDescription;
+    private TextView textViewContent1_2;
+    private TextView textViewContent3;
+    private String mjId;
+    private  double content2 = 0;
+    private  double content3 = 0;
+
 
 
 
@@ -85,8 +104,53 @@ public class MainActivity extends AppCompatActivity {
         Date now = new Date();
         dbHelper = new  DatabaseHelper(this);
 
-        mTextView = (TextView) findViewById(R.id.textview_first);
-        timeTextView = (TextView) findViewById(R.id.textview_first2);
+        mTextView = (TextView) findViewById(R.id.textview_date);
+        timeTextView = (TextView) findViewById(R.id.textview_time);
+        btnSave =(Button) findViewById(R.id.btnSave);
+        btnHistory =(Button) findViewById(R.id.btnHistory);
+        textViewContent1_2 = (TextView) findViewById(R.id.textview_content1_2);
+        textViewContent3= (TextView)findViewById(R.id.textview_content3);
+        editTextPrice = (EditText)findViewById(R.id.editPrice);
+        editTextDescription =(EditText)findViewById(R.id.editDescription);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               saveContentData();
+            }
+        });
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openHistory();
+
+            }
+        });
+
+        editTextPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    double price = Double.parseDouble(s.toString());
+                    if(price> content2+content3) {
+                        editTextPrice.setError("введите меньшую число "+ content2+content3);
+                        btnSave.setEnabled(false);
+                    }else{
+                        editTextPrice.setError(null);
+                        btnSave.setEnabled(true);
+                    }
+                }else{
+                    btnSave.setEnabled(false);
+                }
+
+            }
+        });
+
+
+
         Bundle arguments = getIntent().getExtras();
        Log.d("userID", String.valueOf(arguments.get("userId")));
         if(arguments!=null){
@@ -161,74 +225,7 @@ public class MainActivity extends AppCompatActivity {
             if (tagN != null) {
                 byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
                 String CARD_ID = getHex(id);
-                int checkStatusNew = 0;
-                int idCard = 0;
-                 Cursor cursor = dbHelper.checkIdCard(CARD_ID);
-                 Log.d("countt", String.valueOf(cursor.getCount()));
-                if (cursor.getCount()>0) {
-                    cursor.moveToFirst();
-                    idCard = cursor.getInt(cursor.getColumnIndex(Constans.C_ID));
-                    if(cursor.getInt(cursor.getColumnIndex(Constans.C_STATUS_NEW)) == 1){
-                        checkStatusNew = 1;
-                    }
-                }
-                if(idCard != 0){
-                    dbHelper.insertNfcActive(idCard);
-                    if(checkStatusNew==1){
-                        mediaError.start();
-                        final  SweetAlertDialog  alertDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
-                        alertDialog.setTitleText("Error!");
-                        alertDialog.setContentText(CARD_ID);
-                        alertDialog.setCancelable(false);
-                        alertDialog.hideConfirmButton();
-                        alertDialog.show();
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        alertDialog.hide();
-                                    }
-                                }, 1000);
-
-                    }else{
-
-                        mediaSuccess.start();
-                        final  SweetAlertDialog  alertDialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
-                        alertDialog.setTitleText("OK!");
-                        alertDialog.setContentText(CARD_ID);
-                        alertDialog.setCancelable(false);
-
-                        alertDialog.hideConfirmButton();
-                        alertDialog.show();
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        alertDialog.hide();
-                                    }
-                                }, 1000);
-                    }
-
-
-                }else{
-
-                    int cardId = dbHelper.insertNfcInfo(CARD_ID);
-                    dbHelper.insertNfcActive(cardId);
-                    mediaError.start();
-                    final  SweetAlertDialog  alertDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
-                    alertDialog.setTitleText("Error!");
-                    alertDialog.setContentText(CARD_ID);
-                    alertDialog.setCancelable(false);
-                    alertDialog.hideConfirmButton();
-                    alertDialog.show();
-                    new android.os.Handler().postDelayed(
-                            new Runnable() {
-                                public void run() {
-                                    alertDialog.hide();
-                                }
-                            }, 1000);
-                }
-
-
-
+                getDataMj(CARD_ID);
 
             }
             else {
@@ -260,6 +257,43 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Write to an unformatted tag not implemented");
             }
         }
+    }
+
+    private  void getDataMj (String cardID){
+        Call<MjResponse> call = RetrofitClient.getApiService().getMjData(cardID);
+        call.enqueue(new Callback<MjResponse>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResponse(Call<MjResponse> call, Response<MjResponse> response) {
+                final MjResponse result = response.body();
+                Log.d("result", String.valueOf(result));
+                String text1 = result.getContent1().getName() + " "+ result.getContent3();
+                Log.d(TAG,  text1);
+                textViewContent1_2.setText(text1);
+                textViewContent3.setText(result.getContent2());
+                editTextDescription.setVisibility(View.VISIBLE);
+                editTextPrice.setVisibility(View.VISIBLE);
+                editTextPrice.requestFocus();
+                btnSave.setVisibility(View.VISIBLE);
+                btnHistory.setVisibility(View.VISIBLE);
+
+                mjId = String.valueOf(result.getContent1().getId());
+                content2 = Double.parseDouble(result.getContent2());
+                content3 = Double.parseDouble(result.getContent3());
+          }
+
+            @Override
+            public void onFailure(Call<MjResponse> call, Throwable t) {
+                btnSave.setVisibility(View.INVISIBLE);
+                btnHistory.setVisibility(View.INVISIBLE);
+                textViewContent3.setText("");
+                textViewContent1_2.setText("");
+                editTextDescription.setVisibility(View.INVISIBLE);
+                editTextPrice.setVisibility(View.INVISIBLE);
+                Toast.makeText(MainActivity.this, "нет", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 
 
@@ -294,9 +328,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_sync) {
-            sync();
-        }else if (id ==  R.id.action_exit){
+       if (id ==  R.id.action_exit){
             finish();
         }
         else if (id ==  R.id.action_info){
@@ -304,20 +336,7 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setTitleText("Imei");
             alertDialog.setContentText(getImei(this));
             alertDialog.show();
-        }else if(id == R.id.action_import){
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Хотите импортировать даннные?")
-                    .setContentText("При импорте все данные очиститься!")
-                    .setCancelText("Нет")
-                    .setConfirmText("ДА")
-                    .showCancelButton(true)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) { sDialog.cancel();
-                          importData();
-                        }
-                    })
-                    .show();
+
         }else if(id == R.id.action_change_password){
             openDialog();
         }
@@ -381,37 +400,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public  void sync (){
-        ArrayList<NfcActive> nfcActives = new ArrayList<NfcActive>();
-        final Cursor cursor =  dbHelper.getNfcActive();
+    public  void saveContentData (){
+
         if (haveNetwork()){
-            if(cursor.getCount() == 0){
-                Toast.makeText(this, "Данные не существует", Toast.LENGTH_LONG).show();
-            }else{
+
                 final  SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
                 pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Синхронизация");
+                pDialog.setTitleText("Загрузка");
                 pDialog.setCancelable(false);
                 pDialog.show();
-                while (cursor.moveToNext()){
-                    final String idCard =cursor.getString( cursor.getColumnIndex(Constans.C_ID_CARD));
-                    final String createdAt = cursor.getString(cursor.getColumnIndex(Constans.C_CREATED_AT));
-Log.d("created_at", createdAt);
-                        nfcActives.add(new NfcActive(idCard, createdAt , getImei(this)));
-                }
 
-
-                Call<LoginResponse> call = RetrofitClient.getApiService().sync(nfcActives);
+    double price= Double.parseDouble(editTextPrice.getText().toString());
+                Call<LoginResponse> call = RetrofitClient.getApiService().saveContentData(new PostContentData( userId,mjId,price , editTextDescription.getText().toString() ));
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         final LoginResponse response1 = response.body();
-                        dbHelper.nfcActiveUpdateStatus();
+Log.d("res", response1.getUserId());
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
+                                        editTextDescription.setText("");
+                                      double price = Double.parseDouble(editTextPrice.getText().toString());
+                                      double content3new = content2- price;
+                                        textViewContent3.setText( String.valueOf(content3new));
+                                        editTextPrice.setText("");
                                         pDialog.hide();
-                                        Toast.makeText(MainActivity.this, cursor.getCount() +" успешно отправлено", Toast.LENGTH_LONG).show();
+                                        if(response1.isError()){
+                                            Toast.makeText(MainActivity.this, "не получился сохранить", Toast.LENGTH_LONG).show();
+                                        }else{
+                                            Toast.makeText(MainActivity.this, "Успешно сохранено", Toast.LENGTH_LONG).show();
+                                        }
+
 
                                     }
                                 }, 1000);
@@ -424,7 +444,7 @@ Log.d("created_at", createdAt);
                         pDialog.hide();
                     }
                 });
-            }
+
         } else if (!haveNetwork()) {
             Toast.makeText(MainActivity.this, "Нет подключение к сетю", Toast.LENGTH_SHORT).show();
         }
@@ -472,7 +492,11 @@ Log.d("created_at", createdAt);
         }
     }
 
-
+private  void openHistory (){
+    Intent intent = new Intent(MainActivity.this, TabsActivity.class);
+    intent.putExtra("mjId", mjId);
+    startActivity(intent);
+    }
 
     private void openDialog(){
         ChangePasswordDialog changePasswordDialog= new ChangePasswordDialog();
