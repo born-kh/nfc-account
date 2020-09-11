@@ -331,13 +331,7 @@ public class MainActivity extends AppCompatActivity  {
        if (id ==  R.id.action_exit){
             finish();
         }
-        else if (id ==  R.id.action_info){
-            final  SweetAlertDialog  alertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-            alertDialog.setTitleText("Imei");
-            alertDialog.setContentText(getImei(this));
-            alertDialog.show();
-
-        }else if(id == R.id.action_change_password){
+       else if(id == R.id.action_change_password){
             openDialog();
         }
         return super.onOptionsItemSelected(item);

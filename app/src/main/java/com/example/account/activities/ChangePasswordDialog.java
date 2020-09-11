@@ -35,14 +35,12 @@ public class ChangePasswordDialog  extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.change_password_dialog, null);
         editTextNewPassword = view.findViewById(R.id.editNewPassword);
         editTextOldPassword = view.findViewById((R.id.editOldPassword));
-        Intent intent = getActivity().getIntent();
-        Bundle b = intent.getExtras();
 
-        if(b!=null)
-        {
-           userId = (String) b.get("userId");
+            Log.d("userID", getArguments().getString("userId"));
+           userId =  getArguments().getString("userId");
 
-        }
+
+
         builder.setView(view)
                 .setTitle("Сменить пароль")
                 .setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
@@ -74,6 +72,7 @@ public class ChangePasswordDialog  extends AppCompatDialogFragment {
             editTextOldPassword.requestFocus();
             return;
         }
+
 
         final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));

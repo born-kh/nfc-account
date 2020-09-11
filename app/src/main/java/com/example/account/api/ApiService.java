@@ -19,7 +19,7 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @POST("login.php")
+    @POST("login-mj.php")
     Call<LoginResponse> userLogin(
             @Body Login login
     );
@@ -36,7 +36,7 @@ public interface ApiService {
     @GET("get-content-data.php")
     Call<MjResponse> getMjData(@Query("cardNumber") String cardNumber  );
 
-    @POST("change-password-person.php")
+    @POST("change-password-mj.php")
     Call<Boolean> changePasswordUser(
             @Body ChangePassword changePassword
             );

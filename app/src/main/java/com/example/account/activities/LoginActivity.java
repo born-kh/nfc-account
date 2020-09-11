@@ -89,8 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     if(loginResponse.isError()){
                                         Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_LONG).show();
                                     }else{
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.putExtra("userId", loginResponse.getUserId());
+                                        Intent intent = new Intent(LoginActivity.this, TabsActivity.class);
+                                        intent.putExtra("mjId", loginResponse.getUserId());
                                         startActivity(intent);
                                     }
                                     // onLoginFailed();
