@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity  {
         mTimer.schedule(mMyTimerTask,  0, 1000);
 
 
-
     }
 
 
@@ -493,6 +492,12 @@ Log.d("res", response1.getUserId());
     }
 
 private  void openHistory (){
+    btnSave.setVisibility(View.INVISIBLE);
+    btnHistory.setVisibility(View.INVISIBLE);
+    textViewContent3.setText("");
+    textViewContent1_2.setText("");
+    editTextDescription.setVisibility(View.INVISIBLE);
+    editTextPrice.setVisibility(View.INVISIBLE);
     Intent intent = new Intent(MainActivity.this, TabsActivity.class);
     intent.putExtra("mjId", mjId);
     startActivity(intent);
