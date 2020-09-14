@@ -410,8 +410,14 @@ Log.d("created_at", createdAt);
                         new android.os.Handler().postDelayed(
                                 new Runnable() {
                                     public void run() {
+
                                         pDialog.hide();
-                                        Toast.makeText(MainActivity.this, cursor.getCount() +" успешно отправлено", Toast.LENGTH_LONG).show();
+                                        if(response1.isError()){
+                                            Toast.makeText(MainActivity.this, "Доступ закрыть", Toast.LENGTH_LONG).show();
+                                        }else{
+                                            Toast.makeText(MainActivity.this, cursor.getCount() +" успешно отправлено", Toast.LENGTH_LONG).show();
+
+                                        }
 
                                     }
                                 }, 1000);
