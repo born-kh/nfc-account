@@ -51,6 +51,7 @@ import com.example.account.models.PostContentData;
 import com.example.account.models.RdPxResponse;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity  {
     private String mjId;
     private  double content2 = 0;
     private  double content3 = 0;
-
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
 
 
@@ -266,10 +267,10 @@ public class MainActivity extends AppCompatActivity  {
             public void onResponse(Call<MjResponse> call, Response<MjResponse> response) {
                 final MjResponse result = response.body();
                 Log.d("result", String.valueOf(result));
-                String text1 = result.getContent1().getName() + " "+ result.getContent3();
+                String text1 = result.getContent1().getName() + " "+ df.format(result.getContent3()) ;
                 Log.d(TAG,  text1);
                 textViewContent1_2.setText(text1);
-                textViewContent3.setText(result.getContent2());
+                textViewContent3.setText(df.format(result.getContent2()));
                 editTextDescription.setVisibility(View.VISIBLE);
                 editTextPrice.setVisibility(View.VISIBLE);
                 editTextPrice.requestFocus();
@@ -409,8 +410,8 @@ public class MainActivity extends AppCompatActivity  {
                 pDialog.setCancelable(false);
                 pDialog.show();
 
-    double price= Double.parseDouble(editTextPrice.getText().toString());
-                Call<LoginResponse> call = RetrofitClient.getApiService().saveContentData(new PostContentData( userId,mjId,price , editTextDescription.getText().toString() ));
+    double price= Double.parseDouble(df.format(editTextPrice.getText().toString()));
+                Call<LoginResponse> call = RetrofitClient.getApiService().saveContentData(new PostContentData( userId,mjId, price  , editTextDescription.getText().toString() ));
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
