@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity  {
                 if(s.toString().length()>0){
                     double price = Double.parseDouble(s.toString());
                     if(price> content2+content3) {
-                        editTextPrice.setError("введите меньшую число "+ content2+content3);
+                        editTextPrice.setError("Невозможно! (Лимит: "+ content2+content3+ ")");
                         btnSave.setEnabled(false);
                     }else{
                         editTextPrice.setError(null);
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private  void getDataMj (String cardID){
-        Call<MjResponse> call = RetrofitClient.getApiService().getMjData(cardID);
+        Call<MjResponse> call = RetrofitClient.getApiService().getMjData(cardID, getImei(this));
         call.enqueue(new Callback<MjResponse>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity  {
                 textViewContent1_2.setText("");
                 editTextDescription.setVisibility(View.INVISIBLE);
                 editTextPrice.setVisibility(View.INVISIBLE);
-                Toast.makeText(MainActivity.this, "нет", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Доступ закрыть", Toast.LENGTH_LONG).show();
 
             }
         });

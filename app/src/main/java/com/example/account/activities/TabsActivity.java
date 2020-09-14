@@ -45,8 +45,8 @@ public class TabsActivity extends AppCompatActivity {
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Rd"));
-        tabLayout.addTab(tabLayout.newTab().setText("Px"));
+        tabLayout.addTab(tabLayout.newTab().setText("Затраты"));
+        tabLayout.addTab(tabLayout.newTab().setText("Пополнение"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final ViewPager viewPager =(ViewPager)findViewById(R.id.view_pager);
          tabsAdapter = new TabsAdapter(getSupportFragmentManager(), tabLayout.getTabCount());

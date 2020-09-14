@@ -87,12 +87,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 public void run() {
                                     // On complete call either onLoginSuccess or onLoginFailed
                                     if(loginResponse.isError()){
-                                        Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, "Логин или пароль неверны", Toast.LENGTH_LONG).show();
                                     }else{
+                                        Toast.makeText(LoginActivity.this, "Заргузка", Toast.LENGTH_LONG).show();
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         intent.putExtra("userId", loginResponse.getUserId());
                                         startActivity(intent);
                                     }
+                                    editTextLogin.setText("");
+                                    editTextPassword.setText("");
                                     // onLoginFailed();
                                     pDialog.hide();
                                 }

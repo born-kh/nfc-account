@@ -35,7 +35,7 @@ public class RdPxListAdapter extends RecyclerView.Adapter<RdPxListAdapter.ViewHo
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: "+rdPxList.getPrice(),Toast.LENGTH_LONG).show();
+
             }
         });
     }

@@ -34,7 +34,7 @@ public interface ApiService {
     @GET("getRdPxList.php")
     Call<RdPxResponse> getRdPx(@Query("mjId") String mjId  );
     @GET("get-content-data.php")
-    Call<MjResponse> getMjData(@Query("cardNumber") String cardNumber  );
+    Call<MjResponse> getMjData(@Query("cardNumber") String cardNumber, @Query("imei") String imei  );
 
     @POST("change-password-person.php")
     Call<Boolean> changePasswordUser(
