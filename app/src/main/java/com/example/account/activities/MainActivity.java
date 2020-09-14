@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity  {
                 if(s.toString().length()>0){
                     double price = Double.parseDouble(s.toString());
                     if(price> content2+content3) {
-                        editTextPrice.setError("введите меньшую число "+ content2+content3);
+                        editTextPrice.setError("Невозможно!(Лимит: "+ content2+content3 +")");
                         btnSave.setEnabled(false);
                     }else{
                         editTextPrice.setError(null);
@@ -338,6 +338,7 @@ public class MainActivity extends AppCompatActivity  {
     }
     public static String getDecimal(String hex){
         String digits = "0123456789ABCDEF";
+        hex = hex.toUpperCase();
         hex = hex.toUpperCase();
         int val = 0;
         for (int i = 0; i < hex.length(); i++)
