@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private  static String API_BASE_URL = "http://192.168.150.139/servise/api/";
-
+    //private  static String API_BASE_URL = "http://192.168.43.199/servise/api/";
     private static Gson gson = new GsonBuilder()
             .setLenient()
             .create();

@@ -413,7 +413,7 @@ Log.d("created_at", createdAt);
 
                                         pDialog.hide();
                                         if(response1.isError()){
-                                            Toast.makeText(MainActivity.this, "Доступ закрыть", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(MainActivity.this, response1.getUserId(), Toast.LENGTH_LONG).show();
                                         }else{
                                             Toast.makeText(MainActivity.this, cursor.getCount() +" успешно отправлено", Toast.LENGTH_LONG).show();
 
