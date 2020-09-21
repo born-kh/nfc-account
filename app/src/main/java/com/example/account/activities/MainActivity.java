@@ -427,8 +427,10 @@ Log.d("res", response1.getUserId());
                                 new Runnable() {
                                     public void run() {
                                         editTextDescription.setText("");
+                                        BigDecimal bd = new BigDecimal(content2- price).setScale(2, RoundingMode.HALF_UP);
 
-                                      double content3new = content2- price;
+                                      double content3new =bd.doubleValue() ;
+                                      content2 =bd.doubleValue();
                                         textViewContent3.setText( String.format("%.2f", content3new));
                                         editTextPrice.setText("");
                                         pDialog.hide();
