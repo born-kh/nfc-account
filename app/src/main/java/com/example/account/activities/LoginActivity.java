@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (haveNetwork()){
             final  SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("Зугрузка");
+            pDialog.setTitleText("Загрузка");
             pDialog.setCancelable(false);
             pDialog.show();
             Call<LoginResponse> call = RetrofitClient.getApiService().userLogin(new Login(login, password));
@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     if(loginResponse.isError()){
                                         Toast.makeText(LoginActivity.this, "Логин или пароль неверны", Toast.LENGTH_LONG).show();
                                     }else{
-                                        Toast.makeText(LoginActivity.this, "Заргузка", Toast.LENGTH_LONG).show();
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         intent.putExtra("userId", loginResponse.getUserId());
                                         startActivity(intent);
