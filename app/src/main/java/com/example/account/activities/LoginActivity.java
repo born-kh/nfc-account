@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (haveNetwork()){
             final  SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("Зугрузка");
+            pDialog.setTitleText("Загрузка");
             pDialog.setCancelable(false);
             pDialog.show();
             Call<LoginResponse> call = RetrofitClient.getApiService().userLogin(new Login(login, password));
